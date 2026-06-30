@@ -18,10 +18,16 @@ export class Collection<T> {
   }
 
   removeItem(index: number): boolean {
-    if (index < 0 || index <= this.items.length) {
+    console.log('removeItem вызван, index:', index, 'items до', this.items);
+
+    if (index < 0 || index >= this.items.length) {
+      console.log('Индекс невалидный, удаление отменено');
       return false;
     }
+
     this.items.splice(index, 1);
+    console.log('Элемент удалён, items после:', this.items);
+
     return true;
   }
 

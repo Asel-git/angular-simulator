@@ -23,6 +23,20 @@
       max-width: 145px;
       margin: 30px 100px 30px 0;
       align-items: center;
+
+      .logo_link {
+        text-decoration: none;
+        color: var(--white-color);
+
+        .title {
+          width: 132px;
+          height: 22px;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 22px;
+          letter-spacing: 0.4em;
+        }
+      }
     }
 
     .menu {
