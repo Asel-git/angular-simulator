@@ -1,58 +1,160 @@
-<div class="top_screen">
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <a class="logo_link" href="/">
-          <img class="img" src="/images/logo.svg" alt="logo" />
-          <span class="title">{{ companyName }}</span>
-        </a>
+@if (isLoading) {
+  <div class="loader">
+    <div class="spinner"></div>
+  </div>
+} @else {
+  <div class="top_screen">
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <a class="logo_link" href="/">
+            <img class="img" src="/images/logo.svg" alt="logo" />
+            <span class="title">{{ companyName }}</span>
+          </a>
+        </div>
+        <nav class="nav">
+          <ul class="menu">
+            <li class="menu_item"><a class="link menu_link" href="#">Главная</a></li>
+            <li class="menu_item"><a class="link menu_link" href="#">Про гида</a></li>
+            <li class="menu_item"><a class="link menu_link" href="#">Программа тура</a></li>
+            <li class="menu_item"><a class="link menu_link" href="#">Стоимость</a></li>
+            <li class="menu_item"><a class="link menu_link" href="#">Блог</a></li>
+            <li class="menu_item"><a class="link menu_link" href="#">Контакты</a></li>
+          </ul>
+        </nav>
+        <div class="btn_block"><a class="link btn_link" href="#">Консультация</a></div>
       </div>
-      <nav class="nav">
-        <ul class="menu">
-          <li class="menu_item"><a class="link menu_link" href="#">Главная</a></li>
-          <li class="menu_item"><a class="link menu_link" href="#">Про гида</a></li>
-          <li class="menu_item"><a class="link menu_link" href="#">Программа тура</a></li>
-          <li class="menu_item"><a class="link menu_link" href="#">Стоимость</a></li>
-          <li class="menu_item"><a class="link menu_link" href="#">Блог</a></li>
-          <li class="menu_item"><a class="link menu_link" href="#">Контакты</a></li>
-        </ul>
-      </nav>
-      <div class="btn_block"><a class="link btn_link" href="#">Консультация</a></div>
-    </div>
-  </header>
-</div>
-<main>
-  <section class="enjoy">
-    <div class="container">
-      <div class="date_block">
-        <h2 class="subtitle">Насладись прогулкой в горах с командой единомышленников</h2>
-        <div class="inputs_form">
-          <div class="form_list">
-            <input class="line" list="cities" placeholder="Выберите город" />
-            <datalist id="cities">
-              <option value="Бишкек"></option>
-              <option value="Ош"></option>
-              <option value="Каракол"></option>
-            </datalist>
-            <label>выберите из списка</label>
-          </div>
-          <div class="form_list">
-            <input class="line" type="date" id="date" placeholder="Дата похода" />
-            <label for="date">укажите дату:</label>
-          </div>
+      <div>
+        <button class="toggle_content" (click)="toggleContent()">
+          {{ showTimer ? 'Count' : 'Date' }}
+        </button>
 
-          <div class="form_list">
-            <input list="users" class="line" id="inputt" placeholder="Участники" />
-            <datalist id="users">
-              <option value="Aisha"></option>
-              <option value="usuf"></option>
-              <option value="Zhanarbek"></option>
-            </datalist>
-            <label for="inputt">выберите из списка</label>
+        @if (showTimer) {
+          <div class="current_date">
+            {{ currentDate | date: 'dd.MM.yyyy HH:mm:ss' }}
           </div>
-          <button class="enjoy_btn">Найти программу</button>
+        } @else {
+          <div>
+            <div class="counter">
+              <button class="btn_count" (click)="deCreaseCount()" [disabled]="count === 0">
+                -
+              </button>
+              <span>{{ count }}</span>
+              <button (click)="inCreaseCount()">+</button>
+            </div>
+          </div>
+        }
+      </div>
+    </header>
+  </div>
+  <main>
+    <section class="enjoy">
+      <div class="container">
+        <div class="date_block">
+          <h2 class="enjoy_subtitle">Насладись прогулкой в горах с командой единомышленников</h2>
+          <div class="inputs_form">
+            <div class="form_list">
+              <input
+                [(ngModel)]="location"
+                class="line"
+                list="cities"
+                placeholder="Выберите город"
+              />
+              <datalist id="cities">
+                <option value="Бишкек"></option>
+                <option value="Ош"></option>
+                <option value="Каракол"></option>
+              </datalist>
+              <label>выберите из списка</label>
+            </div>
+
+            <div class="form_list">
+              <input
+                class="line"
+                type="date"
+                [(ngModel)]="date"
+                id="date"
+                placeholder="Дата похода"
+              />
+              <label for="date">укажите дату:</label>
+            </div>
+
+            <div class="form_list">
+              <input
+                [(ngModel)]="people"
+                list="users"
+                class="line"
+                id="inputt"
+                placeholder="Участники"
+              />
+              <datalist id="users">
+                <option value="Aisha"></option>
+                <option value="usuf"></option>
+                <option value="Zhanarbek"></option>
+              </datalist>
+              <label for="inputt">выберите из списка</label>
+            </div>
+            <button class="enjoy_btn" [disabled]="!location || !date || !people">
+              Найти программу
+            </button>
+          </div>
+          <input class="span_input" type="text" [(ngModel)]="text" />
+          <span>{{ text }}</span>
         </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+    <section class="about_hike">
+      <div class="hike_img">
+        <img class="img_front" src="/images/hike-front.png" alt="hike-front" />
+        <img class="img_back" src="/images/hike-back.png" alt="hike-back" />
+      </div>
+      <div class="title_wrapper">
+        <span class="hike_info gold_info">о нашем походе</span>
+        <h3 class="hike_title title_info">Исследуйте все горные массивы мира вместе с нами</h3>
+        <p class="hike_description desc-info">
+          Его корни уходят в один фрагмент классической латыни 45 года н.э., то есть более двух
+          тысячелетий назад. Ричард МакКлинток, профессор латыни из колледжа Hampden-Sydney, штат
+          Вирджиния, взял одно из самых странных слов в Lorem Ipsum, "consectetur"и занялся его
+          поисками в классической латинской литературе.
+        </p>
+        <a class="hike_btn" href="">Программа тура</a>
+      </div>
+    </section>
+    <section class="offer">
+      <div class="offer_wrapper">
+        <span class="offer_info gold_info">наше предложение</span>
+        <h3 class="offer_title title_info">Лучшие программы для тебя</h3>
+        <p class="offer_description desc-info">
+          Его корни уходят в один фрагмент классической латыни 45 года н.э., то есть более двух
+          тысячелетий назад. Ричард МакКлинток, профессор латыни из колледжа.
+        </p>
+        <div class="offer_list">
+          @for (offer of offers; track offer.id) {
+            <div
+              class="offer_item"
+              [class.active_offer]="offer.id === selectedOfferId"
+              (click)="selectOffer(offer.id)"
+            >
+              <div>
+                <img class="offer_img" [src]="offer.image" [alt]="" />
+              </div>
+              <div offer_info>
+                <h4 class="offer_subtitle">{{ offer.subtitle }}</h4>
+                <p class="offer_item_desc">
+                  {{ offer.description }}
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+        <button class="offer_btn" href="">Стоимость программ</button>
+      </div>
+      <div class="offer_gallery">
+        <img src="/images/hike-img1.png" alt="" />
+        <img src="/images/hike-img2.png" alt="" />
+        <img src="/images/hike-img3.png" alt="" />
+        <img src="/images/hike-img4.png" alt="" />
+      </div>
+    </section>
+  </main>
+}
